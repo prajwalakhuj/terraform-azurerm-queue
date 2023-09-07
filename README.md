@@ -57,7 +57,7 @@ module "service_bus_queue" {
   queue_capacity                          = 2 # Messaging units for "Premium" SKU
   session_enabled                         = true
   multi_zone_enabled                      = true
-  max_storage_size                        = 1024
+  max_storage_size                        = 1024 # in megabytes
   tags                                    = { Department = Engineering }
 }
 ```
