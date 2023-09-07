@@ -20,7 +20,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_service_bus_queue"></a> [service\_bus\_queue](#module\_service\_bus\_queue) | squareops/azurerm/queue | n/a |
+| <a name="module_service_bus_queue"></a> [service\_bus\_queue](#module\_service\_bus\_queue) | sqaureops/azurerm/queue | n/a |
 
 ## Resources
 
