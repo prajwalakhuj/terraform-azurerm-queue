@@ -47,16 +47,17 @@ module "service_bus_queue" {
   source                                  = "squareops/azurerm/queue"
   name                                    = "skaf"
   environment                             = "prod"
-  resource_group_location                 = "eastus"
-  namespace_sku_tier                      = "Standard"
+  region                                  = "eastus"
+  namespace_name                          = "ns" # Service bus queue namespace.
+  sku_queue_tier                          = "Standard" # There are three types of tiers "Basic", "Standard" & "Premium"
   lock_duration                           = "PT1M"
   max_delivery_count                      = 10
   duplicate_detection_enabled             = true
   duplicate_detection_history_time_window = "PT10M"
-  capacity                                = 2 # Messaging units for "Premium" SKU
+  queue_capacity                          = 2 # Messaging units for "Premium" SKU
   session_enabled                         = true
-  zone_redundant                          = true
-  max_size_in_megabytes                   = 1024
+  multi_zone_enabled                      = true
+  max_storage_size                        = 1024
   tags                                    = { Department = Engineering }
 }
 ```
@@ -97,35 +98,28 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_capacity"></a> [capacity](#input\_capacity) | Service Bus SKU `Premium` only supports `capacity` of 1, 2, 4, 8 or 16 | `number` | `1` | no |
 | <a name="input_duplicate_detection_enabled"></a> [duplicate\_detection\_enabled](#input\_duplicate\_detection\_enabled) | Specifies whether the queue should detect duplicate messages (true/false) | `bool` | `false` | no |
 | <a name="input_duplicate_detection_history_time_window"></a> [duplicate\_detection\_history\_time\_window](#input\_duplicate\_detection\_history\_time\_window) | Time window for duplicate detection history (ISO-8601) | `string` | `"PT10M"` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment for the Service Bus components. | `string` | `"dev"` | no |
 | <a name="input_lock_duration"></a> [lock\_duration](#input\_lock\_duration) | Message lock duration (ISO-8601) | `string` | `"PT1M"` | no |
 | <a name="input_max_delivery_count"></a> [max\_delivery\_count](#input\_max\_delivery\_count) | Maximum number of attempts to deliver a message before it's sent to dead letter queue | `number` | `10` | no |
-| <a name="input_max_size_in_megabytes"></a> [max\_size\_in\_megabytes](#input\_max\_size\_in\_megabytes) | The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024. | `number` | `1024` | no |
+| <a name="input_max_storage_size"></a> [max\_storage\_size](#input\_max\_storage\_size) | The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024. | `number` | `1024` | no |
+| <a name="input_multi_zone_enabled"></a> [multi\_zone\_enabled](#input\_multi\_zone\_enabled) | Zones spread for queue server. Only for `Premium` SKU's | `bool` | `false` | no |
 | <a name="input_name"></a> [name](#input\_name) | The name for the Service Bus components. | `string` | `""` | no |
-| <a name="input_namespace_sku_tier"></a> [namespace\_sku\_tier](#input\_namespace\_sku\_tier) | The SKU tier for the Service Bus namespace. | `string` | `"standard"` | no |
-| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | The location of the Azure Resource Group. | `string` | `""` | no |
+| <a name="input_namespace_name"></a> [namespace\_name](#input\_namespace\_name) | The namespace name for the Service Bus components. | `string` | `""` | no |
+| <a name="input_queue_capacity"></a> [queue\_capacity](#input\_queue\_capacity) | Service Bus SKU `Premium` only supports `capacity` of 1, 2, 4, 8 or 16 | `number` | `1` | no |
+| <a name="input_region"></a> [region](#input\_region) | The location of the Azure Resource Group. | `string` | `""` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | The name of the Azure Resource Group. | `string` | `""` | no |
 | <a name="input_session_enabled"></a> [session\_enabled](#input\_session\_enabled) | A value that indicates whether the queue requires sessions | `bool` | `false` | no |
+| <a name="input_sku_queue_tier"></a> [sku\_queue\_tier](#input\_sku\_queue\_tier) | The SKU tier for the Service Bus namespace. | `string` | `"standard"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags for the Service Bus resources. | `map(string)` | `{}` | no |
-| <a name="input_zone_redundant"></a> [zone\_redundant](#input\_zone\_redundant) | Zones spread for queue server. Only for `Premium` SKU's | `bool` | `false` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_primary_listen_connection_string"></a> [primary\_listen\_connection\_string](#output\_primary\_listen\_connection\_string) | Primary connection string for listen operations |
-| <a name="output_primary_listen_shared_access_key"></a> [primary\_listen\_shared\_access\_key](#output\_primary\_listen\_shared\_access\_key) | Primary shared access key with listen rights |
-| <a name="output_primary_send_connection_string"></a> [primary\_send\_connection\_string](#output\_primary\_send\_connection\_string) | Primary connection string for send operations |
-| <a name="output_primary_send_shared_access_key"></a> [primary\_send\_shared\_access\_key](#output\_primary\_send\_shared\_access\_key) | Primary shared access key with send rights |
 | <a name="output_queue_name"></a> [queue\_name](#output\_queue\_name) | Name of the service bus queue |
 | <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | Name of the resource group |
-| <a name="output_secondary_listen_connection_string"></a> [secondary\_listen\_connection\_string](#output\_secondary\_listen\_connection\_string) | Secondary connection string for listen operations |
-| <a name="output_secondary_listen_shared_access_key"></a> [secondary\_listen\_shared\_access\_key](#output\_secondary\_listen\_shared\_access\_key) | Secondary shared access key with listen rights |
-| <a name="output_secondary_send_connection_string"></a> [secondary\_send\_connection\_string](#output\_secondary\_send\_connection\_string) | Secondary connection string for send operations |
-| <a name="output_secondary_send_shared_access_key"></a> [secondary\_send\_shared\_access\_key](#output\_secondary\_send\_shared\_access\_key) | Secondary shared access key with send rights |
 | <a name="output_service_bus_namespace"></a> [service\_bus\_namespace](#output\_service\_bus\_namespace) | Name of the service bus queue |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

@@ -5,17 +5,17 @@ locals {
 
 resource "azurerm_resource_group" "queue" {
   name     = format("%s-%s-%s", var.environment, var.name, "rg")
-  location = var.resource_group_location
+  location = var.region
 }
 
 resource "azurerm_servicebus_namespace" "queue" {
-  name                = format("%s-%s-%s", var.environment, var.name, "ns")
+  name                = format("%s-%s-%s", var.environment, var.name, var.namespace_name)
   location            = azurerm_resource_group.queue.location
   resource_group_name = azurerm_resource_group.queue.name
-  sku                 = var.namespace_sku_tier
-  capacity            = var.namespace_sku_tier != "Premium" ? 0 : var.capacity
+  sku                 = var.sku_queue_tier
+  capacity            = var.sku_queue_tier != "Premium" ? 0 : var.queue_capacity
   local_auth_enabled  = true
-  zone_redundant      = var.namespace_sku_tier != "Premium" ? false : var.zone_redundant
+  zone_redundant      = var.sku_queue_tier != "Premium" ? false : var.multi_zone_enabled
   tags                = var.tags
 }
 
@@ -28,7 +28,7 @@ resource "azurerm_servicebus_queue" "servicebus_queue" {
   requires_duplicate_detection            = var.duplicate_detection_enabled
   duplicate_detection_history_time_window = var.duplicate_detection_history_time_window
   requires_session                        = var.session_enabled
-  max_size_in_megabytes                   = var.max_size_in_megabytes
+  max_size_in_megabytes                   = var.max_storage_size
   default_message_ttl                     = "P10675199DT2H48M5.4775807S"
   dead_lettering_on_message_expiration    = true
   auto_delete_on_idle                     = "P10675199DT2H48M5.4775807S"

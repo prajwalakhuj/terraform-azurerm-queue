@@ -4,7 +4,7 @@ variable "resource_group_name" {
   default     = ""
 }
 
-variable "resource_group_location" {
+variable "region" {
   type        = string
   description = "The location of the Azure Resource Group."
   default     = ""
@@ -22,7 +22,13 @@ variable "name" {
   default     = ""
 }
 
-variable "namespace_sku_tier" {
+variable "namespace_name" {
+  type        = string
+  description = "The namespace name for the Service Bus components."
+  default     = ""
+}
+
+variable "sku_queue_tier" {
   type        = string
   description = "The SKU tier for the Service Bus namespace."
   default     = "standard"
@@ -64,19 +70,19 @@ variable "session_enabled" {
   default     = false
 }
 
-variable "max_size_in_megabytes" {
+variable "max_storage_size" {
   type        = number
   description = "The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024."
   default     = 1024
 }
 
-variable "zone_redundant" {
+variable "multi_zone_enabled" {
   type        = bool
   description = "Zones spread for queue server. Only for `Premium` SKU's"
   default     = false
 }
 
-variable "capacity" {
+variable "queue_capacity" {
   type        = number
   description = "Service Bus SKU `Premium` only supports `capacity` of 1, 2, 4, 8 or 16"
   default     = 1
